@@ -1,12 +1,10 @@
-tiktoken
 python-dotenv
 pinecone-client
-unstructured
-pypdf
-openai
 langchain
 pandas
 numpy 
+streamlit
 langchain-community
 beautifulsoup4
-chromadb
+validators
+langchain_groq
