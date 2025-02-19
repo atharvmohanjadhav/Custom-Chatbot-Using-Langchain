@@ -8,3 +8,4 @@ langchain-community
 beautifulsoup4
 validators
 langchain_groq
+sentence-transformers
