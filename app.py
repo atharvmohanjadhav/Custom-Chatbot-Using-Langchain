@@ -2,7 +2,7 @@ from dotenv import load_dotenv
 import streamlit as st
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_community.vectorstores import Chroma
-from langchain.embeddings import HuggingFaceEmbeddings
+from langchain_community.embeddings import HuggingFaceEmbeddings
 from langchain_community.document_loaders import WebBaseLoader
 from langchain_groq import ChatGroq
 import os
