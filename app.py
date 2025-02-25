@@ -1,7 +1,6 @@
 from dotenv import load_dotenv
 import streamlit as st
 from langchain.text_splitter import RecursiveCharacterTextSplitter
-from langchain_community.vectorstores import Chroma
 from langchain.embeddings import HuggingFaceEmbeddings
 from langchain_community.document_loaders import WebBaseLoader
 from langchain_groq import ChatGroq
@@ -53,10 +52,10 @@ if user_url:
         # Initialize Embeddings
         embeddings = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2")
 
-        # Pinecone Setup 
+        # Pinecone Setup (Make sure API Key is set in the environment)
         from pinecone import Pinecone
 
-        os.environ["PINECONE_API_KEY"] = "pcsk_748Zfb_HciVT3heHenUizcDLrZfDZX5pj9F51bzqmCfy1M7LFY7uvyxLxFbmfSF1WNTiot" # Store API key 
+        os.environ["PINECONE_API_KEY"] = "pcsk_748Zfb_HciVT3heHenUizcDLrZfDZX5pj9F51bzqmCfy1M7LFY7uvyxLxFbmfSF1WNTiot" # Store API key safely
         if not os.environ["PINECONE_API_KEY"]:
             st.error("Pinecone API Key is missing!")
         else:
