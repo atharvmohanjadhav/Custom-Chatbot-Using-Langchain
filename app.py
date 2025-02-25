@@ -53,7 +53,7 @@ if user_url:
         # Initialize Embeddings
         embeddings = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2")
 
-        # Pinecone Setup (Make sure API Key is set in the environment)
+        # Pinecone Setup 
         from pinecone import Pinecone
 
         os.environ["PINECONE_API_KEY"] = "pcsk_748Zfb_HciVT3heHenUizcDLrZfDZX5pj9F51bzqmCfy1M7LFY7uvyxLxFbmfSF1WNTiot" # Store API key safely
