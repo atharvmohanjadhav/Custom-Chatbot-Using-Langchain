@@ -2,7 +2,7 @@ from dotenv import load_dotenv
 import streamlit as st
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_community.vectorstores import Chroma
-from langchain_community.embeddings import HuggingFaceEmbeddings
+from langchain.embeddings import HuggingFaceEmbeddings
 from langchain_community.document_loaders import WebBaseLoader
 from langchain_groq import ChatGroq
 import os
@@ -56,7 +56,7 @@ if user_url:
         # Pinecone Setup 
         from pinecone import Pinecone
 
-        os.environ["PINECONE_API_KEY"] = "pcsk_748Zfb_HciVT3heHenUizcDLrZfDZX5pj9F51bzqmCfy1M7LFY7uvyxLxFbmfSF1WNTiot" # Store API key safely
+        os.environ["PINECONE_API_KEY"] = "pcsk_748Zfb_HciVT3heHenUizcDLrZfDZX5pj9F51bzqmCfy1M7LFY7uvyxLxFbmfSF1WNTiot" # Store API key 
         if not os.environ["PINECONE_API_KEY"]:
             st.error("Pinecone API Key is missing!")
         else:
