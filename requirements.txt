@@ -1,5 +1,5 @@
 python-dotenv
-pinecone-client
+pinecone
 langchain
 pandas
 numpy 
