@@ -69,7 +69,7 @@ if user_url:
             vectorstore = Pinecone.from_documents(
                 documents=documents, 
                 embedding=embeddings, 
-                index_name=index_name
+                index_name=index
             )
 
             # Function to Retrieve Similar Documents
