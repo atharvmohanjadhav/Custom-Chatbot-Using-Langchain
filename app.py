@@ -1,6 +1,7 @@
 from dotenv import load_dotenv
 import streamlit as st
 from langchain.text_splitter import RecursiveCharacterTextSplitter
+from langchain_community.vectorstores import Chroma
 from langchain.embeddings import HuggingFaceEmbeddings
 from langchain_community.document_loaders import WebBaseLoader
 from langchain_groq import ChatGroq
@@ -50,6 +51,8 @@ if user_url:
         documents = text_splitter.split_documents(docs)
 
         # Initialize Embeddings
+        from sentence_transformers import SentenceTransformer
+
         embeddings = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2")
 
         # Pinecone Setup (Make sure API Key is set in the environment)
@@ -66,11 +69,7 @@ if user_url:
 
             from langchain.vectorstores import Pinecone
 
-            vectorstore = Pinecone.from_documents(
-                documents=documents, 
-                embedding=embeddings, 
-                index_name=index
-            )
+            vectorstore = Pinecone(index,embeddings.embed_query,index_name)
 
             # Function to Retrieve Similar Documents
             def retrieve(query, k=2):
@@ -82,15 +81,23 @@ if user_url:
             if not GROQ_API_KEY:
                 st.error("Groq API Key is missing!")
             else:
-                llm = ChatGroq(model_name="llama3-8b-8192", api_key=GROQ_API_KEY)
+                llm = ChatGroq(model_name="llama-3.3-70b-versatile", api_key=GROQ_API_KEY)
                 
                 from langchain.chains.question_answering import load_qa_chain
                 chain = load_qa_chain(llm, chain_type="stuff")
 
                 # Function to Generate Answers
-                def retriever_ans(query):
-                    web_search = retrieve(query)
-                    res = chain.run(input_documents=web_search, question=query)
+                def get_ai_response(query):
+                    # Search relevant data in Pinecone
+                    search_results = vectorstore.similarity_search(query, k=3)
+
+                    # Extract relevant context
+                    context = "\n".join([doc.page_content for doc in search_results])
+
+                    # Generate response using LLaMA
+                    prompt = f"Context:\n{context}\n\nQuestion: {query}\n\nAnswer:"
+                    res = llm.invoke(prompt)
+                    
                     return res
 
                 # Chat Interface
@@ -106,9 +113,9 @@ if user_url:
                     st.session_state.chat_history.append({'role': 'user', 'content': user_question})
 
                     # Get Answer
-                    answer = retriever_ans(user_question)
-                    st.session_state.chat_history.append({'role': 'assistant', 'content': answer})
+                    answer = get_ai_response(user_question)
+                    st.session_state.chat_history.append({'role': 'assistant', 'content': answer.content})
 
                     # Display Chatbot Response
                     with st.chat_message("Assistant"):
-                        st.markdown(answer)
+                        st.markdown(answer.content)
