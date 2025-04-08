@@ -1,0 +1,12 @@
+sentence-transformers
+python-dotenv
+pinecone-client
+langchain
+pandas
+numpy 
+streamlit
+langchain-community
+beautifulsoup4
+validators
+langchain_groq
+
